@@ -1,4 +1,5 @@
 import React from 'react';
+import footerLogo from './images/Logo.svg';
 
 function Footer() {
   return (
