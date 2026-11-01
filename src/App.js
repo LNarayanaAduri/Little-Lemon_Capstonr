@@ -8,8 +8,10 @@ import './App.css';
 function App() {
   return (
     <div className="app-container">
-      <Header />
-      <Nav />
+      <div className="top-navigation-bar">
+        <Header />
+        <Nav />
+      </div>
       <Main />
       <Footer />
     </div>

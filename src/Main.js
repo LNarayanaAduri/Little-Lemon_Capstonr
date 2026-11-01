@@ -3,6 +3,10 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './Homepage';
 import BookingPage from './Bookingpage';
 import ConfirmedBooking from './ConfirmedBooking';
+import Menu from './Menu';
+import OrderOnline from './OrderOnline';
+import Login from './Login';
+import PlaceholderPage from './PlaceholderPage';
 
 const initializeTimes = () => {
   const today = new Date();
@@ -45,6 +49,27 @@ function Main() {
           } 
         />
         <Route path="/confirmed" element={<ConfirmedBooking />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/order-online" element={<OrderOnline />} />
+        <Route path="/login" element={<Login />} />
+        <Route 
+          path="/about" 
+          element={
+            <PlaceholderPage 
+              title="About Little Lemon" 
+              description="Learn about our rich culinary heritage, authentic Mediterranean recipes, and our Chicago founders, Mario and Adrian." 
+            />
+          } 
+        />
+        <Route 
+          path="*" 
+          element={
+            <PlaceholderPage 
+              title="Page Not Found" 
+              description="The page you requested could not be found. Please check the URL or return to our homepage." 
+            />
+          } 
+        />
       </Routes>
     </main>
   );
