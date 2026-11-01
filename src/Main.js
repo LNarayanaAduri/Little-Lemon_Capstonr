@@ -1,48 +1,54 @@
 import React, { useReducer } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import HomePage from './Homepage';
 import BookingPage from './Bookingpage';
+import ConfirmedBooking from './ConfirmedBooking';
 
-// Initial times function
 const initializeTimes = () => {
-  return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+  const today = new Date();
+  return window.fetchAPI ? window.fetchAPI(today) : ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
 };
 
-// Reducer function to update available times based on selected date
 const updateTimes = (state, action) => {
   switch (action.type) {
-    case 'UPDATE_TIMES':
-      // For now, return available times regardless of the date
-      return ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+    case 'UPDATE_TIMES': {
+      const selectedDate = new Date(action.date);
+      return window.fetchAPI ? window.fetchAPI(selectedDate) : state;
+    }
     default:
       return state;
   }
 };
 
 function Main() {
-  const [availableTimes, dispatch] = useReducer(updateTimes, initializeTimes());
+  const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
+  const navigate = useNavigate();
 
   const submitForm = (formData) => {
-    console.log('Submitted booking form:', formData);
+    if (window.submitAPI && window.submitAPI(formData)) {
+      navigate('/confirmed');
+    }
   };
 
   return (
     <main className="main-content">
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/booking"
+        <Route 
+          path="/booking" 
           element={
-            <BookingPage
-              availableTimes={availableTimes}
-              dispatch={dispatch}
-              submitForm={submitForm}
+            <BookingPage 
+              availableTimes={availableTimes} 
+              dispatch={dispatch} 
+              submitForm={submitForm} 
             />
-          }
+          } 
         />
+        <Route path="/confirmed" element={<ConfirmedBooking />} />
       </Routes>
     </main>
   );
 }
 
+export { initializeTimes, updateTimes };
 export default Main;
